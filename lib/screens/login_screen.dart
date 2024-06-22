@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:gorouter_and_sessions_activity/controller/auth_controller.dart';
+import 'package:gorouter_and_sessions_activity/screens/home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String route = "/login";
@@ -36,8 +38,31 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  void onSubmit() {
-    if (formKey.currentState!.validate()) {}
+  void onSubmit(BuildContext context) async {
+    if (formKey.currentState!.validate()) {
+      try {
+        await AuthController.I
+            .login(username.text.trim(), password.text.trim());
+        Navigator.of(context).pushReplacementNamed(HomeScreen.route);
+      } catch (e) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            title: Text("Login Failed"),
+            content: Text(e.toString()),
+            actions: <Widget>[
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
+        );
+        print("Login failed: $e");
+      }
+    }
   }
 
   @override
@@ -49,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
               margin: const EdgeInsets.only(left: 24, right: 24, bottom: 24),
               child: ElevatedButton(
                 onPressed: () {
-                  onSubmit();
+                  onSubmit(context);
                 },
                 style: ButtonStyle(
                   backgroundColor: WidgetStateProperty.resolveWith<Color>(
@@ -135,6 +160,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       Flexible(
                         child: TextFormField(
+                          keyboardType: TextInputType.visiblePassword,
                           focusNode: passwordFn,
                           controller: password,
                           obscureText: obscureBool,

@@ -30,13 +30,14 @@ class AuthController with ChangeNotifier {
 }
 
 class SimulatedAPI {
-  Map<String, String> users = {"testUser": "12345678abc!"};
+  Map<String, String> users = {"testUser": "12345678Abc!"};
 
   Future<bool> login(String userName, String password) async {
-    // Simulating a delay in authentication
     await Future.delayed(const Duration(seconds: 2));
     if (users[userName] == null) throw Exception("User does not exist");
-    if (users[userName] == password) return true;
-    return false;
+    if (users[userName] != password) {
+      throw Exception("Password does not match!");
+    }
+    return users[userName] == password;
   }
 }
