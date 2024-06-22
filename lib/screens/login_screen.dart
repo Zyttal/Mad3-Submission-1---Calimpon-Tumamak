@@ -43,6 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
       try {
         await AuthController.I
             .login(username.text.trim(), password.text.trim());
+        await AuthController.I.saveAuthState();
         Navigator.of(context).pushReplacementNamed(HomeScreen.route);
       } catch (e) {
         showDialog(

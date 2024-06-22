@@ -4,7 +4,9 @@ import 'package:gorouter_and_sessions_activity/routes.dart';
 import 'themes/theme.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   AuthController.initialize();
+  AuthController.I.loadAuthState();
   GlobalRouter.initialize();
 
   runApp(const MainApp());

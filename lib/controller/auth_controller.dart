@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:gorouter_and_sessions_activity/enum/enum.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthController with ChangeNotifier {
+  static const String _authKey = 'authState';
+
   static void initialize() {
     GetIt.instance.registerSingleton<AuthController>(AuthController());
   }
@@ -26,6 +29,26 @@ class AuthController with ChangeNotifier {
       state = AuthState.authenticated;
     }
     return isLoggedIn;
+  }
+
+  Future<void> saveAuthState() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setInt(_authKey, _state.index);
+
+    int? savedIndex = prefs.getInt(_authKey);
+    AuthState savedState =
+        AuthState.values[savedIndex ?? AuthState.unauthenticated.index];
+    print('Saved auth state: $_state (Index: $_authKey)');
+  }
+
+  Future<void> loadAuthState() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    AuthState savedState = AuthState
+        .values[prefs.getInt(_authKey) ?? AuthState.unauthenticated.index];
+    _state = savedState;
+    notifyListeners();
+
+    print('Loaded auth state: $_state');
   }
 }
 
