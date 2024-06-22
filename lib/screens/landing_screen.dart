@@ -1,10 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:gorouter_and_sessions_activity/routes.dart';
+import 'package:gorouter_and_sessions_activity/screens/login_screen.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-  static const String route = '/home';
+class LandingScreen extends StatefulWidget {
+  const LandingScreen({super.key});
+  static const String route = '/';
+  static const String name = "Landing Screen";
+  @override
+  State<LandingScreen> createState() => _LandingScreenState();
+}
+
+class _LandingScreenState extends State<LandingScreen> {
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration(seconds: 4), () {
+      GlobalRouter.instance.router.go(LoginScreen.route);
+    });
+  }
 
   Widget build(BuildContext context) {
     return Scaffold(

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 
 class LoginScreen extends StatefulWidget {
-  static const String route = "/auth";
+  static const String route = "/login";
   static const String name = "Login Screen";
   const LoginScreen({super.key});
 
