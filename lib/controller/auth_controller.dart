@@ -50,6 +50,15 @@ class AuthController with ChangeNotifier {
 
     print('Loaded auth state: $_state');
   }
+
+  Future<void> logout() async {
+    state = AuthState.unauthenticated;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_authKey);
+    notifyListeners();
+
+    print("User should be directed back to the Login Screen");
+  }
 }
 
 class SimulatedAPI {
